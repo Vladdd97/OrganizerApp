@@ -1,5 +1,6 @@
 package com.example.vlad.organiserapp;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,6 +33,11 @@ public class ShowAllEventsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 int id = v.getId() - modifyButtonIncreaseIndex;
+
+                Intent modifyEventIntent = new Intent(ShowAllEventsActivity.this,ModifyEventActivity.class);
+                //modifyEventIntent.putExtra("dateOfEvent",modifyEventIntent);
+                startActivity(modifyEventIntent);
+
                 Log.d("ShowAllEventsLogger", "id :" + id);
             }
         };
