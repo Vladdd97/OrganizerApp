@@ -108,8 +108,8 @@ public class CustomEventXml {
                             if (node.getNodeType() == Node.ELEMENT_NODE) {
                                 Element eElement = (Element) node;
                                 // mod id element
-                                if ("id".equals(eElement.getNodeName()))
-                                    eElement.setTextContent(Integer.toString(customEvent.getId()));
+                                //if ("id".equals(eElement.getNodeName()))
+                                    //eElement.setTextContent(Integer.toString(customEvent.getId()));
                                 // mod title element
                                 if ("title".equals(eElement.getNodeName()))
                                     eElement.setTextContent(customEvent.getTitle());
