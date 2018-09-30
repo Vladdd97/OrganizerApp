@@ -67,8 +67,6 @@ public class AddEventActivity extends AppCompatActivity implements TimePickerDia
 
         customEvent = new CustomEvent(CustomEventXml.getLastEventId() + 1,titleOfEvent.getText().toString(),
                 descriptionOfEvent.getText().toString(), dateTimeOfEvent);
-        String path = Environment.getExternalStorageDirectory() + File.separator + "myEvents.xml";
-        CustomEventXml.fileName  = path;
 
         if ( CustomEventXml.checkIfExists(CustomEventXml.fileName)){
             CustomEventXml.addEventXml(customEvent);
@@ -77,7 +75,7 @@ public class AddEventActivity extends AppCompatActivity implements TimePickerDia
             CustomEventXml.createAndWriteToXml(customEvent);
         }
 
-        Log.d("AddEventActivity","Path : "+path);
+        Log.d("AddEventActivity","Path : "+CustomEventXml.fileName);
         Log.d("AddEventActivity","Was added an event : "+customEvent.toString());
 
         finish();
