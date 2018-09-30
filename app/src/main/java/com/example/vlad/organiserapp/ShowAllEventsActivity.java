@@ -20,6 +20,7 @@ public class ShowAllEventsActivity extends AppCompatActivity {
     public int deleteButtonIncreaseIndex = 2000;
     public View.OnClickListener modifyButtonOnClickListener;
     public View.OnClickListener deleteButtonOnClickListener;
+    public LinearLayout parentLinearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +31,7 @@ public class ShowAllEventsActivity extends AppCompatActivity {
         modifyButtonOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int id = v.getId();
+                int id = v.getId() - modifyButtonIncreaseIndex;
                 Log.d("ShowAllEventsLogger", "id :" + id);
             }
         };
@@ -39,7 +40,10 @@ public class ShowAllEventsActivity extends AppCompatActivity {
         deleteButtonOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int id = v.getId();
+                int id = v.getId() - deleteButtonIncreaseIndex;
+                CustomEventXml.deleteEvent(id);
+                parentLinearLayout.removeAllViews();
+                showAllEvents();
                 Log.d("ShowAllEventsLogger", "id :" + id);
             }
         };
@@ -51,7 +55,7 @@ public class ShowAllEventsActivity extends AppCompatActivity {
     public void showAllEvents() {
 
         // get parent Layout
-        LinearLayout parentLinearLayout = findViewById(R.id.eventsLinearLayout);
+        parentLinearLayout = findViewById(R.id.eventsLinearLayout);
         ArrayList<CustomEvent> eventList;
         eventList = CustomEventXml.getcustomEvents();
         for (int i = 0; i < eventList.size(); i++) {
