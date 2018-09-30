@@ -3,8 +3,6 @@ package com.example.vlad.organiserapp;
 import java.util.Date;
 
 public class CustomEvent {
-
-    private static int count = 0;
     private int id;
     private String title;
     private String description;
@@ -13,8 +11,15 @@ public class CustomEvent {
     public CustomEvent(){}
 
     public CustomEvent(String title, String description, Date date) {
-        count++;
-        this.id = count;
+        this.id = 1;
+        this.title = title;
+        this.description = description;
+        this.date = date;
+    }
+
+
+    public CustomEvent(int id, String title, String description, Date date) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.date = date;

@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import java.io.File;
 import java.util.Date;
 
 
@@ -50,9 +51,12 @@ public class AddEventActivity extends AppCompatActivity implements TimePickerDia
         dateTimeOfEvent.setMonth(Integer.parseInt(date[1]));
         dateTimeOfEvent.setYear(Integer.parseInt(date[2]));
 
-        customEvent = new CustomEvent(titleOfEvent.getText().toString(),
+        customEvent = new CustomEvent(1,titleOfEvent.getText().toString(),
                 descriptionOfEvent.getText().toString(), dateTimeOfEvent);
+        CustomEventXml.createAndWriteToXml(customEvent);
         Log.d("AddEventActivity","Was added an event : "+customEvent.toString());
+
+
         finish();
     }
 
