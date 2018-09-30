@@ -100,4 +100,9 @@ public class AddEventActivity extends AppCompatActivity implements TimePickerDia
     }
 
 
+    public void onClick_backButton(View v){
+        finish();
+    }
+
+
 }

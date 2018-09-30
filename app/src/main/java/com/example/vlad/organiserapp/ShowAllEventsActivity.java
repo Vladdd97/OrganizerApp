@@ -105,19 +105,9 @@ public class ShowAllEventsActivity extends AppCompatActivity {
 
     }
 
-
-    //try something , need to be deleted
-    int count = 0;
-
-    public void onClick_addTextViewButton(View v) {
-
-        count++;
-        LinearLayout eventsLinearLayout = findViewById(R.id.eventsLinearLayout);
-
-        TextView txtName = new TextView(ShowAllEventsActivity.this);
-        txtName.setId(count);
-        txtName.setText("new text" + "\n" + "dadada");
-
-        eventsLinearLayout.addView(txtName);
+    public void onClick_backButton(View v){
+        finish();
     }
+
+
 }
