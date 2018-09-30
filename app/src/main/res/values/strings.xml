@@ -8,4 +8,5 @@
     <string name="descriptionOfEvent">Write description of the event</string>
     <string name="timeButton">Choose Time</string>
     <string name="timeTextView">00:00</string>
+    <string name="showEventsButton">ShowEvents</string>
 </resources>

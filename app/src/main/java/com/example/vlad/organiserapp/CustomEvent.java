@@ -2,21 +2,16 @@ package com.example.vlad.organiserapp;
 
 import java.util.Date;
 
+
 public class CustomEvent {
+
     private int id;
     private String title;
     private String description;
     private Date date;
 
-    public CustomEvent(){}
-
-    public CustomEvent(String title, String description, Date date) {
-        this.id = 1;
-        this.title = title;
-        this.description = description;
-        this.date = date;
+    public CustomEvent() {
     }
-
 
     public CustomEvent(int id, String title, String description, Date date) {
         this.id = id;
@@ -57,6 +52,7 @@ public class CustomEvent {
     public void setDate(Date date) {
         this.date = date;
     }
+
 
     @Override
     public String toString() {

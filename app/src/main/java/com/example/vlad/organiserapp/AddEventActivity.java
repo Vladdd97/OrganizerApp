@@ -1,7 +1,10 @@
 package com.example.vlad.organiserapp;
 
+import android.app.Application;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +13,17 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Date;
 
 
@@ -53,6 +67,36 @@ public class AddEventActivity extends AppCompatActivity implements TimePickerDia
 
         customEvent = new CustomEvent(1,titleOfEvent.getText().toString(),
                 descriptionOfEvent.getText().toString(), dateTimeOfEvent);
+
+        // access events.xml file
+        //ClassLoader classLoader = getClass().getClassLoader();
+        //File file = new File(classLoader.getResource("raw/events.xml").getFile());
+        //String path = System.getProperty("user.dir");
+
+        //File rootDataDir = this.getActivity().getFilesDir();
+        //Log.i(TAG, rootDataDir.toString());
+
+        //CustomEventXml.fileName = path + "events.xml";
+
+/*
+        try {
+            FileOutputStream fos = openFileOutput("my_text_file.txt",
+                    Context.MODE_PRIVATE);
+            OutputStreamWriter osw = new OutputStreamWriter(fos);
+            osw.write("17");
+            osw.flush();
+            osw.close();
+        } catch (java.io.IOException e) {
+            // do something if an IOException occurs.
+        } */
+
+
+
+        //InputStream inputStream = this.getResources().openRawResource(R.raw.car);
+        //CustomEventXml.fileName = "cars.xml";
+        String path = Environment.getExternalStorageDirectory() + File.separator + "myEvents.xml";
+        CustomEventXml.fileName  = path;
+        Log.d("AddEventActivity","Path : "+path);
         CustomEventXml.createAndWriteToXml(customEvent);
         Log.d("AddEventActivity","Was added an event : "+customEvent.toString());
 

@@ -1,19 +1,21 @@
 package com.example.vlad.organiserapp;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 import org.w3c.dom.*;
+
 import javax.xml.parsers.*;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+
 import java.io.File;
 
+
 public class CustomEventXml {
-
-
 
     public static String fileName = "events.xml";
 
@@ -41,7 +43,7 @@ public class CustomEventXml {
 
             // id element
             Element id = doc.createElement("id");
-            id.appendChild( doc.createTextNode( Integer.toString( customEvent.getId() ) ) );
+            id.appendChild(doc.createTextNode(Integer.toString(customEvent.getId())));
             event.appendChild(id);
 
             // title element
@@ -53,6 +55,11 @@ public class CustomEventXml {
             Element description = doc.createElement("description");
             description.appendChild(doc.createTextNode(customEvent.getDescription()));
             event.appendChild(description);
+
+            // date element , will be stored in a Long format
+            Element date = doc.createElement("date");
+            date.appendChild(doc.createTextNode(Long.toString(customEvent.getDate().getTime())));
+            event.appendChild(date);
 
 
             // write the content into xml file
@@ -69,8 +76,8 @@ public class CustomEventXml {
     }
 
 
-
-    public static void modifyXml(int modId) {
+    // will modify an event base on modId
+    public static void modifyXml(int modId, CustomEvent customEvent) {
 
 
         try {
@@ -100,10 +107,18 @@ public class CustomEventXml {
                             Node node = eventChilds.item(j);
                             if (node.getNodeType() == Node.ELEMENT_NODE) {
                                 Element eElement = (Element) node;
+                                // mod id element
                                 if ("id".equals(eElement.getNodeName()))
-                                    eElement.setTextContent("11");
+                                    eElement.setTextContent(Integer.toString(customEvent.getId()));
+                                // mod title element
                                 if ("title".equals(eElement.getNodeName()))
-                                    eElement.setTextContent("modified title");
+                                    eElement.setTextContent(customEvent.getTitle());
+                                // mod description element
+                                if ("description".equals(eElement.getNodeName()))
+                                    eElement.setTextContent(customEvent.getDescription());
+                                // mod date element
+                                if ("date".equals(eElement.getNodeName()))
+                                    eElement.setTextContent(Long.toString(customEvent.getDate().getTime()));
                             }
                         }
                     }
@@ -124,7 +139,7 @@ public class CustomEventXml {
     }
 
 
-    public static void addEventXml(CustomEvent customEvent){
+    public static void addEventXml(CustomEvent customEvent) {
 
 
         try {
@@ -144,13 +159,13 @@ public class CustomEventXml {
 
             // setting eventId attribute to event element
             Attr attr = doc.createAttribute("eventId");
-            attr.setValue("1");
+            attr.setValue(Integer.toString(customEvent.getId()));
             event.setAttributeNode(attr);
 
 
             // id element
             Element id = doc.createElement("id");
-            id.appendChild( doc.createTextNode( Integer.toString( customEvent.getId() ) ) );
+            id.appendChild(doc.createTextNode(Integer.toString(customEvent.getId())));
             event.appendChild(id);
 
             // title element
@@ -162,6 +177,11 @@ public class CustomEventXml {
             Element description = doc.createElement("description");
             description.appendChild(doc.createTextNode(customEvent.getDescription()));
             event.appendChild(description);
+
+            // date element
+            Element date = doc.createElement("date");
+            date.appendChild(doc.createTextNode(Long.toString(customEvent.getDate().getTime())));
+            event.appendChild(date);
 
 
             // write the content into xml file
@@ -177,15 +197,71 @@ public class CustomEventXml {
 
     }
 
-    public static boolean checkIfExists(String fileName){
+
+    public static ArrayList<CustomEvent> getcustomEvents() {
+
+        ArrayList<CustomEvent> customEventList = new ArrayList<>();
+
+        try {
+            File inputFile = new File(fileName);
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+            Document doc = docBuilder.parse(inputFile);
+
+            // find all event tags
+            NodeList eventsList = doc.getElementsByTagName("event");
+
+            // loop all events
+            for (int i = 0; i < eventsList.getLength(); i++) {
+                Node event = eventsList.item(i);
+                if (event.getNodeType() == Node.ELEMENT_NODE) {
+
+                    NodeList eventChilds = event.getChildNodes();
+                    CustomEvent customEventtt = new CustomEvent();
+                    customEventList.add(customEventtt);
+                    // loop all event's tag
+                    for (int j = 0; j < eventChilds.getLength(); j++) {
+                        Node node = eventChilds.item(j);
+                        if (node.getNodeType() == Node.ELEMENT_NODE) {
+                            Element eElement = (Element) node;
+                            // mod id element
+                            if ("id".equals(eElement.getNodeName()))
+                                customEventtt.setId(Integer.parseInt(eElement.getTextContent()));
+                            // mod title element
+                            if ("title".equals(eElement.getNodeName()))
+                                customEventtt.setTitle(eElement.getTextContent());
+                            // mod description element
+                            if ("description".equals(eElement.getNodeName()))
+                                customEventtt.setDescription(eElement.getTextContent());
+                            // mod date element
+                            if ("date".equals(eElement.getNodeName()))
+                                customEventtt.setDate(new Date(Long.parseLong(eElement.getTextContent())));
+                        }
+                    }
+
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return customEventList;
+    }
+
+
+    public static boolean checkIfExists(String fileName) {
         File file = new File(fileName);
         boolean exists = file.exists();
         return exists;
     }
 
     // get eventId of the last event
-    public static int getLastEventId(){
+    public static int getLastEventId() {
         int lastEventId = 0;
+        if (!checkIfExists(CustomEventXml.fileName)) {
+            return lastEventId;
+        }
 
 
         try {
@@ -198,7 +274,7 @@ public class CustomEventXml {
             NodeList eventsList = doc.getElementsByTagName("event");
 
             // get the last event
-            Node lastEventNode = eventsList.item(eventsList.getLength()-1);
+            Node lastEventNode = eventsList.item(eventsList.getLength() - 1);
             Element lastEventElement = (Element) lastEventNode;
             // get the eventId of the last event
             lastEventId = Integer.parseInt(lastEventElement.getAttribute("eventId"));
@@ -207,8 +283,5 @@ public class CustomEventXml {
         }
         return lastEventId;
     }
-
-
-
 
 }

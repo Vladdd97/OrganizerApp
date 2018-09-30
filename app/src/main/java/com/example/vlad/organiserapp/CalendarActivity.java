@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CalendarView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class CalendarActivity extends AppCompatActivity {
@@ -39,6 +41,15 @@ public class CalendarActivity extends AppCompatActivity {
         Intent addEventIntent = new Intent(CalendarActivity.this,AddEventActivity.class);
         addEventIntent.putExtra("dateOfEvent",dateOfEvent);
         startActivity(addEventIntent);
+    }
+
+
+    public void onClick_getEvents(View v){
+        ArrayList<CustomEvent> eventList;
+        eventList = CustomEventXml.getcustomEvents();
+        for ( int i = 0 ; i < eventList.size(); i++){
+            Log.d("outputMessage","event : "+ eventList.get(i));
+        }
     }
 
 
