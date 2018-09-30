@@ -77,8 +77,9 @@ public class CustomEventXml {
 
 
     // will modify an event base on modId
-    public static void modifyXml(int modId, CustomEvent customEvent) {
+    public static void modifyXml(CustomEvent customEvent) {
 
+        int modId = customEvent.getId();
 
         try {
             File inputFile = new File(fileName);
@@ -109,7 +110,7 @@ public class CustomEventXml {
                                 Element eElement = (Element) node;
                                 // mod id element
                                 //if ("id".equals(eElement.getNodeName()))
-                                    //eElement.setTextContent(Integer.toString(customEvent.getId()));
+                                //eElement.setTextContent(Integer.toString(customEvent.getId()));
                                 // mod title element
                                 if ("title".equals(eElement.getNodeName()))
                                     eElement.setTextContent(customEvent.getTitle());
@@ -149,8 +150,8 @@ public class CustomEventXml {
             Document doc = docBuilder.parse(inputFile);
 
             // root element
-            NodeList rootNoode = doc.getElementsByTagName("OrganaizerAppEvents");
-            Element rootElement = (Element) rootNoode.item(0);
+            Node rootNoode = doc.getFirstChild();
+            Element rootElement = (Element) rootNoode;
 
 
             // event element
@@ -194,6 +195,51 @@ public class CustomEventXml {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+    }
+
+    public static void deleteEvent(int deleteId) {
+
+
+        try {
+            File inputFile = new File(fileName);
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+            Document doc = docBuilder.parse(inputFile);
+
+            // root element
+            Node rootNoode = doc.getFirstChild();
+
+            // find all event tags
+            NodeList eventsList = doc.getElementsByTagName("event");
+
+            // loop all events
+            for (int i = 0; i < eventsList.getLength(); i++) {
+                Node event = eventsList.item(i);
+                if (event.getNodeType() == Node.ELEMENT_NODE) {
+
+                    Element eventElement = (Element) event;
+                    // find eventId
+                    int eventId = Integer.parseInt(eventElement.getAttribute("eventId"));
+
+                    // check if it is the wanted event
+                    if (deleteId == eventId) {
+                        rootNoode.removeChild(event);
+                    }
+                }
+            }
+
+            // write the content into xml file
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(doc);
+            StreamResult result = new StreamResult(new File(fileName));
+            transformer.transform(source, result);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
     }
 
