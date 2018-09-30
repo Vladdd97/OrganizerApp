@@ -56,6 +56,12 @@ public class CalendarActivity extends AppCompatActivity {
         for ( int i = 0 ; i < eventList.size(); i++){
             Log.d("outputMessage","event : "+ eventList.get(i));
         }
+
+        Intent getEventIntent = new Intent(CalendarActivity.this,ShowAllEventsActivity.class);
+        getEventIntent.putExtra("dateOfEvent",dateOfEvent);
+        startActivity(getEventIntent);
+
+
     }
 
 
