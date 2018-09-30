@@ -18,23 +18,43 @@ public class ShowAllEventsActivity extends AppCompatActivity {
     public int textViewIncreaseIndex = 0;
     public int modifyButtonIncreaseIndex = 1000;
     public int deleteButtonIncreaseIndex = 2000;
+    public View.OnClickListener modifyButtonOnClickListener;
+    public View.OnClickListener deleteButtonOnClickListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_all_events);
 
+        // create OnClickListener for modify button
+        modifyButtonOnClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int id = v.getId();
+                Log.d("ShowAllEventsLogger", "id :" + id);
+            }
+        };
+
+        // create OnClickListener for delete button
+        deleteButtonOnClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int id = v.getId();
+                Log.d("ShowAllEventsLogger", "id :" + id);
+            }
+        };
+
 
         showAllEvents();
     }
 
-    public void showAllEvents(){
+    public void showAllEvents() {
 
         // get parent Layout
         LinearLayout parentLinearLayout = findViewById(R.id.eventsLinearLayout);
         ArrayList<CustomEvent> eventList;
         eventList = CustomEventXml.getcustomEvents();
-        for( int i = 0 ; i < eventList.size(); i++){
+        for (int i = 0; i < eventList.size(); i++) {
 
             // create child LinearLayout for TextView
             LinearLayout childTextViewLinearLayout = new LinearLayout(ShowAllEventsActivity.this);
@@ -56,12 +76,16 @@ public class ShowAllEventsActivity extends AppCompatActivity {
             modifyButton.setId(modifyButtonIncreaseIndex + eventList.get(i).getId());
             modifyButton.setText("Modify");
             modifyButton.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_dark));
+            // add OnClickListener to modify button
+            modifyButton.setOnClickListener(modifyButtonOnClickListener);
 
             // create delete button
             Button deleteButton = new Button(ShowAllEventsActivity.this);
             deleteButton.setId(deleteButtonIncreaseIndex + eventList.get(i).getId());
             deleteButton.setText("Delete");
             deleteButton.setBackgroundColor(getResources().getColor(android.R.color.holo_red_dark));
+            // add OnClickListener to delete button
+            deleteButton.setOnClickListener(deleteButtonOnClickListener);
 
             // add TextView to child LinearLayout for TextView
             childTextViewLinearLayout.addView(newTextView);
@@ -78,13 +102,12 @@ public class ShowAllEventsActivity extends AppCompatActivity {
     }
 
 
-
-
     //try something , need to be deleted
     int count = 0;
-    public void onClick_addTextViewButton(View v){
 
-        count ++;
+    public void onClick_addTextViewButton(View v) {
+
+        count++;
         LinearLayout eventsLinearLayout = findViewById(R.id.eventsLinearLayout);
 
         TextView txtName = new TextView(ShowAllEventsActivity.this);
