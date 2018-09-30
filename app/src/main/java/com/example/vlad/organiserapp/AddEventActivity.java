@@ -65,41 +65,20 @@ public class AddEventActivity extends AppCompatActivity implements TimePickerDia
         dateTimeOfEvent.setMonth(Integer.parseInt(date[1]));
         dateTimeOfEvent.setYear(Integer.parseInt(date[2]));
 
-        customEvent = new CustomEvent(1,titleOfEvent.getText().toString(),
+        customEvent = new CustomEvent(CustomEventXml.getLastEventId() + 1,titleOfEvent.getText().toString(),
                 descriptionOfEvent.getText().toString(), dateTimeOfEvent);
-
-        // access events.xml file
-        //ClassLoader classLoader = getClass().getClassLoader();
-        //File file = new File(classLoader.getResource("raw/events.xml").getFile());
-        //String path = System.getProperty("user.dir");
-
-        //File rootDataDir = this.getActivity().getFilesDir();
-        //Log.i(TAG, rootDataDir.toString());
-
-        //CustomEventXml.fileName = path + "events.xml";
-
-/*
-        try {
-            FileOutputStream fos = openFileOutput("my_text_file.txt",
-                    Context.MODE_PRIVATE);
-            OutputStreamWriter osw = new OutputStreamWriter(fos);
-            osw.write("17");
-            osw.flush();
-            osw.close();
-        } catch (java.io.IOException e) {
-            // do something if an IOException occurs.
-        } */
-
-
-
-        //InputStream inputStream = this.getResources().openRawResource(R.raw.car);
-        //CustomEventXml.fileName = "cars.xml";
         String path = Environment.getExternalStorageDirectory() + File.separator + "myEvents.xml";
         CustomEventXml.fileName  = path;
-        Log.d("AddEventActivity","Path : "+path);
-        CustomEventXml.createAndWriteToXml(customEvent);
-        Log.d("AddEventActivity","Was added an event : "+customEvent.toString());
 
+        if ( CustomEventXml.checkIfExists(CustomEventXml.fileName)){
+            CustomEventXml.addEventXml(customEvent);
+        }
+        else{
+            CustomEventXml.createAndWriteToXml(customEvent);
+        }
+
+        Log.d("AddEventActivity","Path : "+path);
+        Log.d("AddEventActivity","Was added an event : "+customEvent.toString());
 
         finish();
     }
