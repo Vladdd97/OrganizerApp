@@ -1,6 +1,9 @@
 package com.example.vlad.organiserapp;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +15,7 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class CalendarActivity extends AppCompatActivity {
@@ -55,6 +59,23 @@ public class CalendarActivity extends AppCompatActivity {
         Intent getEventIntent = new Intent(CalendarActivity.this,ShowAllEventsActivity.class);
         startActivity(getEventIntent);
 
+
+    }
+
+    public void onClick_setNotificationButton(View v) {
+
+        Calendar calendar = Calendar.getInstance();
+        Intent setNotificationIntent = new Intent(CalendarActivity.this,NotificationReceiver.class);
+
+        PendingIntent pedingIntent = PendingIntent.getBroadcast(getApplicationContext(),RequestCodes.NOTIFICATION_REQUEST_CODE,
+                setNotificationIntent,PendingIntent.FLAG_UPDATE_CURRENT );
+
+        AlarmManager alarManager =  (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT)
+            alarManager.setExact(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis()+10000,pedingIntent);
+        else
+            alarManager.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis()+10000,pedingIntent);
 
     }
 

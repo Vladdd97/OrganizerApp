@@ -24,7 +24,6 @@ public class ShowAllEventsActivity extends AppCompatActivity {
     public View.OnClickListener modifyButtonOnClickListener;
     public View.OnClickListener deleteButtonOnClickListener;
     public LinearLayout parentLinearLayout;
-    public final int MODIFY_ACTIVITY_RESULT = 300;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +38,7 @@ public class ShowAllEventsActivity extends AppCompatActivity {
 
                 Intent modifyEventIntent = new Intent(ShowAllEventsActivity.this,ModifyEventActivity.class);
                 modifyEventIntent.putExtra("eventId",id);
-                startActivityForResult(modifyEventIntent,MODIFY_ACTIVITY_RESULT);
+                startActivityForResult(modifyEventIntent,RequestCodes.MODIFY_ACTIVITY_RESULT);
 
                 Log.d("ShowAllEventsLogger", "id :" + id);
             }
@@ -64,7 +63,7 @@ public class ShowAllEventsActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         //super.onActivityResult(requestCode, resultCode, data);
-        if ( requestCode == MODIFY_ACTIVITY_RESULT){
+        if ( requestCode == RequestCodes.MODIFY_ACTIVITY_RESULT){
             parentLinearLayout.removeAllViews();
             showAllEvents();
         }
