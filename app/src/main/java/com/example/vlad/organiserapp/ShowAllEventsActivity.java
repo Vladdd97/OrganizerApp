@@ -22,6 +22,7 @@ public class ShowAllEventsActivity extends AppCompatActivity {
     public View.OnClickListener modifyButtonOnClickListener;
     public View.OnClickListener deleteButtonOnClickListener;
     public LinearLayout parentLinearLayout;
+    public final int MODIFY_ACTIVITY_RESULT = 300;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +36,10 @@ public class ShowAllEventsActivity extends AppCompatActivity {
                 int id = v.getId() - modifyButtonIncreaseIndex;
 
                 Intent modifyEventIntent = new Intent(ShowAllEventsActivity.this,ModifyEventActivity.class);
-                //modifyEventIntent.putExtra("dateOfEvent",modifyEventIntent);
+                modifyEventIntent.putExtra("eventId",id);
                 startActivity(modifyEventIntent);
+
+                //startActivityForResult(modifyEventIntent,MODIFY_ACTIVITY_RESULT);
 
                 Log.d("ShowAllEventsLogger", "id :" + id);
             }

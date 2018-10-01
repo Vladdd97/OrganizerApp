@@ -62,7 +62,7 @@ public class AddEventActivity extends AppCompatActivity implements TimePickerDia
         String [] date = dateOfEvent.toString().split("/");
 
         dateTimeOfEvent.setDate(Integer.parseInt(date[0]));
-        dateTimeOfEvent.setMonth(Integer.parseInt(date[1]));
+        dateTimeOfEvent.setMonth(Integer.parseInt(date[1]) - 1);
         dateTimeOfEvent.setYear(Integer.parseInt(date[2]));
 
         customEvent = new CustomEvent(CustomEventXml.getLastEventId() + 1,titleOfEvent.getText().toString(),

@@ -36,7 +36,7 @@ public class CalendarActivity extends AppCompatActivity {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 Toast.makeText(getBaseContext(),"You have selected : " + dayOfMonth + "day ",Toast.LENGTH_SHORT).show();
-                dateOfEvent = dayOfMonth + "/" + month + "/" + year;
+                dateOfEvent = dayOfMonth + "/" + (month+1) + "/" + year;
             }
         });
     }
@@ -51,14 +51,8 @@ public class CalendarActivity extends AppCompatActivity {
 
 
     public void onClick_getEvents(View v){
-        ArrayList<CustomEvent> eventList;
-        eventList = CustomEventXml.getcustomEvents();
-        for ( int i = 0 ; i < eventList.size(); i++){
-            Log.d("outputMessage","event : "+ eventList.get(i));
-        }
 
         Intent getEventIntent = new Intent(CalendarActivity.this,ShowAllEventsActivity.class);
-        getEventIntent.putExtra("dateOfEvent",dateOfEvent);
         startActivity(getEventIntent);
 
 
