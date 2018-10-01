@@ -2,6 +2,7 @@ package com.example.vlad.organiserapp;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ShowAllEventsActivity extends AppCompatActivity {
 
@@ -37,9 +39,7 @@ public class ShowAllEventsActivity extends AppCompatActivity {
 
                 Intent modifyEventIntent = new Intent(ShowAllEventsActivity.this,ModifyEventActivity.class);
                 modifyEventIntent.putExtra("eventId",id);
-                startActivity(modifyEventIntent);
-
-                //startActivityForResult(modifyEventIntent,MODIFY_ACTIVITY_RESULT);
+                startActivityForResult(modifyEventIntent,MODIFY_ACTIVITY_RESULT);
 
                 Log.d("ShowAllEventsLogger", "id :" + id);
             }
@@ -61,6 +61,16 @@ public class ShowAllEventsActivity extends AppCompatActivity {
         showAllEvents();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        //super.onActivityResult(requestCode, resultCode, data);
+        if ( requestCode == MODIFY_ACTIVITY_RESULT){
+            parentLinearLayout.removeAllViews();
+            showAllEvents();
+        }
+
+    }
+
     public void showAllEvents() {
 
         // get parent Layout
@@ -75,11 +85,13 @@ public class ShowAllEventsActivity extends AppCompatActivity {
             // create new TextView
             TextView newTextView = new TextView(ShowAllEventsActivity.this);
             newTextView.setId(textViewIncreaseIndex + eventList.get(i).getId());
+            Date eventDate = eventList.get(i).getDate();
             newTextView.setText("\n" + "" +
                     "ID : " + eventList.get(i).getId() + "\n" +
                     "Title : " + eventList.get(i).getTitle() + "\n" +
                     "Description : " + eventList.get(i).getDescription() + "\n" +
-                    "Date : " + eventList.get(i).getDate());
+                    "Date : " + eventDate.getDate() + "/" + eventDate.getMonth() + eventDate.getYear() +"\n" +
+                    "Time: " + eventDate.getHours() + ":" + eventDate.getMinutes());
 
             // create child LinearLayout for Buttons
             LinearLayout childButtonswLinearLayout = new LinearLayout(ShowAllEventsActivity.this);
@@ -88,7 +100,9 @@ public class ShowAllEventsActivity extends AppCompatActivity {
             Button modifyButton = new Button(ShowAllEventsActivity.this);
             modifyButton.setId(modifyButtonIncreaseIndex + eventList.get(i).getId());
             modifyButton.setText("Modify");
-            modifyButton.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_dark));
+            // style of button
+            modifyButton.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_light));
+            modifyButton.setTextColor(getResources().getColor(android.R.color.white));
             // add OnClickListener to modify button
             modifyButton.setOnClickListener(modifyButtonOnClickListener);
 
@@ -96,7 +110,9 @@ public class ShowAllEventsActivity extends AppCompatActivity {
             Button deleteButton = new Button(ShowAllEventsActivity.this);
             deleteButton.setId(deleteButtonIncreaseIndex + eventList.get(i).getId());
             deleteButton.setText("Delete");
-            deleteButton.setBackgroundColor(getResources().getColor(android.R.color.holo_red_dark));
+            // style of button
+            deleteButton.setBackgroundColor(getResources().getColor(android.R.color.holo_red_light));
+            deleteButton.setTextColor(getResources().getColor(android.R.color.white));
             // add OnClickListener to delete button
             deleteButton.setOnClickListener(deleteButtonOnClickListener);
 

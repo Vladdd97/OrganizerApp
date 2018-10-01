@@ -149,7 +149,7 @@ public class CustomEventXml {
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
             Document doc = docBuilder.parse(inputFile);
 
-            // root element
+            // root node
             Node rootNoode = doc.getFirstChild();
             Element rootElement = (Element) rootNoode;
 
@@ -241,6 +241,66 @@ public class CustomEventXml {
         }
 
 
+    }
+
+    // get Event by getId
+    public static CustomEvent getEventById (int getId){
+
+        CustomEvent customEvent = new CustomEvent();
+
+        try {
+            File inputFile = new File(fileName);
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+            Document doc = docBuilder.parse(inputFile);
+
+            // find all event tags
+            NodeList eventsList = doc.getElementsByTagName("event");
+
+            // loop all events
+            for (int i = 0; i < eventsList.getLength(); i++) {
+                Node event = eventsList.item(i);
+                if (event.getNodeType() == Node.ELEMENT_NODE) {
+
+                    Element eventElement = (Element) event;
+                    // find eventId
+                    int eventId = Integer.parseInt(eventElement.getAttribute("eventId"));
+
+                    // check if it is the wanted event
+                    if (getId == eventId) {
+
+                        NodeList eventChilds = event.getChildNodes();
+                        // loop all event's tag
+                        for (int j = 0; j < eventChilds.getLength(); j++) {
+                            Node node = eventChilds.item(j);
+                            if (node.getNodeType() == Node.ELEMENT_NODE) {
+                                Element eElement = (Element) node;
+                                // set id element
+                                if ("id".equals(eElement.getNodeName()))
+                                    customEvent.setId(Integer.parseInt(eElement.getTextContent()));
+                                // set title element
+                                if ("title".equals(eElement.getNodeName()))
+                                    customEvent.setTitle(eElement.getTextContent());
+                                // set description element
+                                if ("description".equals(eElement.getNodeName()))
+                                    customEvent.setDescription(eElement.getTextContent());
+                                // set date element
+                                if ("date".equals(eElement.getNodeName()))
+                                    customEvent.setDate(new Date( Long.parseLong(eElement.getTextContent()) ));
+                            }
+                        }
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
+
+        return customEvent;
     }
 
 
