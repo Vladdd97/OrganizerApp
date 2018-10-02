@@ -67,7 +67,7 @@ public class CalendarActivity extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         Intent setNotificationIntent = new Intent(CalendarActivity.this,NotificationReceiver.class);
         //need to be modified
-        setNotificationIntent.putExtra("eventId",2);
+        setNotificationIntent.putExtra("eventId",1);
 
         PendingIntent pedingIntent = PendingIntent.getBroadcast(getApplicationContext(),RequestCodes.NOTIFICATION_REQUEST_CODE,
                 setNotificationIntent,PendingIntent.FLAG_UPDATE_CURRENT );
