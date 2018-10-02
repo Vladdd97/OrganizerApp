@@ -22,8 +22,11 @@
         </activity>
         <activity android:name=".AddEventActivity" />
         <activity android:name=".ShowAllEventsActivity" />
-        <activity android:name=".ModifyEventActivity"></activity>
-        <receiver android:name=".NotificationReceiver"/>
+        <activity android:name=".ModifyEventActivity" />
+
+        <receiver android:name=".NotificationReceiver" />
+
+        <activity android:name=".ShowEventaNotificationActivity"></activity>
     </application>
 
 </manifest>

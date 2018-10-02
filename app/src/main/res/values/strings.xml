@@ -10,4 +10,5 @@
     <string name="timeTextView">00:00</string>
     <string name="showEventsButton">ShowEvents</string>
     <string name="backButton">Back</string>
+    <string name="eventTextView">You have an event at this time !</string>
 </resources>
