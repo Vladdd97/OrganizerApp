@@ -29,10 +29,10 @@ public class ModifyEventActivity extends AppCompatActivity implements TimePicker
         timeTextView = findViewById(R.id.timeTextView);
 
 
-        // get eventByIs
+        // get eventById
         fromActivity = getIntent();
         eventId = fromActivity.getExtras().getInt("eventId");
-        customEvent = CustomEventXml.getEventById(eventId);
+        customEvent = CustomEventXmlParser.getEventById(eventId);
         Log.d("Modifyactivity","Passed customEventObject : " + customEvent.toString());
 
         // set all TextInputs
@@ -64,7 +64,7 @@ public class ModifyEventActivity extends AppCompatActivity implements TimePicker
 
         customEvent.setTitle(titleOfEvent.getText().toString());
         customEvent.setDescription(descriptionOfEvent.getText().toString());
-        CustomEventXml.modifyXml(customEvent);
+        CustomEventXmlParser.modifyXml(customEvent);
 
         finish();
     }

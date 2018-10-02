@@ -2,19 +2,18 @@ package com.example.vlad.organiserapp;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.CalendarView;
 import android.widget.Toast;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -30,8 +29,9 @@ public class CalendarActivity extends AppCompatActivity {
         calendarView = findViewById(R.id.calendarView);
 
         // set fileName variable of CustomXml class
-        String path = Environment.getExternalStorageDirectory() + File.separator + "OrgAppEvents.xml";
-        CustomEventXml.fileName  = path;
+        // getFileDir() - Returns a File representing an internal directory for your app
+        String path = getFilesDir() + File.separator + "OrganiserAppEvents.xml";
+        CustomEventXmlParser.fileName  = path;
 
         date = new Date();
         dateOfEvent = date.getDate() + "/" + date.getMonth() + "/" + date.getYear();
@@ -66,6 +66,8 @@ public class CalendarActivity extends AppCompatActivity {
 
         Calendar calendar = Calendar.getInstance();
         Intent setNotificationIntent = new Intent(CalendarActivity.this,NotificationReceiver.class);
+        //need to be modified
+        setNotificationIntent.putExtra("eventId",2);
 
         PendingIntent pedingIntent = PendingIntent.getBroadcast(getApplicationContext(),RequestCodes.NOTIFICATION_REQUEST_CODE,
                 setNotificationIntent,PendingIntent.FLAG_UPDATE_CURRENT );

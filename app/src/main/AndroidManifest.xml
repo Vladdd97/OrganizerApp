@@ -26,7 +26,7 @@
 
         <receiver android:name=".NotificationReceiver" />
 
-        <activity android:name=".ShowEventaNotificationActivity"></activity>
+        <activity android:name=".ShowEventNotificationActivity"></activity>
     </application>
 
 </manifest>

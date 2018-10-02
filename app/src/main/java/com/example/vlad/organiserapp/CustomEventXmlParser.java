@@ -1,7 +1,6 @@
 package com.example.vlad.organiserapp;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 import org.w3c.dom.*;
@@ -15,7 +14,7 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 
 
-public class CustomEventXml {
+public class CustomEventXmlParser {
 
     public static String fileName = "events.xml";
 
@@ -365,7 +364,7 @@ public class CustomEventXml {
     // get eventId of the last event
     public static int getLastEventId() {
         int lastEventId = 0;
-        if (!checkIfExists(CustomEventXml.fileName)) {
+        if (!checkIfExists(CustomEventXmlParser.fileName)) {
             return lastEventId;
         }
 

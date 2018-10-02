@@ -1,7 +1,6 @@
 package com.example.vlad.organiserapp;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,8 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -49,7 +46,7 @@ public class ShowAllEventsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 int id = v.getId() - deleteButtonIncreaseIndex;
-                CustomEventXml.deleteEvent(id);
+                CustomEventXmlParser.deleteEvent(id);
                 parentLinearLayout.removeAllViews();
                 showAllEvents();
                 Log.d("ShowAllEventsLogger", "id :" + id);
@@ -75,7 +72,7 @@ public class ShowAllEventsActivity extends AppCompatActivity {
         // get parent Layout
         parentLinearLayout = findViewById(R.id.eventsLinearLayout);
         ArrayList<CustomEvent> eventList;
-        eventList = CustomEventXml.getcustomEvents();
+        eventList = CustomEventXmlParser.getcustomEvents();
         for (int i = 0; i < eventList.size(); i++) {
 
             // create child LinearLayout for TextView

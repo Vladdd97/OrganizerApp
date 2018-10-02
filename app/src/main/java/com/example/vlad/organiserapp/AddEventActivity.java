@@ -1,10 +1,7 @@
 package com.example.vlad.organiserapp;
 
-import android.app.Application;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -52,17 +49,17 @@ public class AddEventActivity extends AppCompatActivity implements TimePickerDia
         dateTimeOfEvent.setMonth(Integer.parseInt(date[1]) - 1);
         dateTimeOfEvent.setYear(Integer.parseInt(date[2]));
 
-        customEvent = new CustomEvent(CustomEventXml.getLastEventId() + 1,titleOfEvent.getText().toString(),
+        customEvent = new CustomEvent(CustomEventXmlParser.getLastEventId() + 1,titleOfEvent.getText().toString(),
                 descriptionOfEvent.getText().toString(), dateTimeOfEvent);
 
-        if ( CustomEventXml.checkIfExists(CustomEventXml.fileName)){
-            CustomEventXml.addEventXml(customEvent);
+        if ( CustomEventXmlParser.checkIfExists(CustomEventXmlParser.fileName)){
+            CustomEventXmlParser.addEventXml(customEvent);
         }
         else{
-            CustomEventXml.createAndWriteToXml(customEvent);
+            CustomEventXmlParser.createAndWriteToXml(customEvent);
         }
 
-        Log.d("AddEventActivity","Path : "+CustomEventXml.fileName);
+        Log.d("AddEventActivity","Path : "+ CustomEventXmlParser.fileName);
         Log.d("AddEventActivity","Was added an event : "+customEvent.toString());
 
         finish();
