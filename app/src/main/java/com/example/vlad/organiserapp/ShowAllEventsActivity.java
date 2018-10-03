@@ -86,6 +86,7 @@ public class ShowAllEventsActivity extends AppCompatActivity {
                     "ID : " + eventList.get(i).getId() + "\n" +
                     "Title : " + eventList.get(i).getTitle() + "\n" +
                     "Description : " + eventList.get(i).getDescription() + "\n" +
+                    "isAlarmSet : " + eventList.get(i).getIsAlarmSet() + "\n" +
                     "Date : " + eventDate.getDate() + "/" + eventDate.getMonth() + eventDate.getYear() +"\n" +
                     "Time: " + eventDate.getHours() + ":" + eventDate.getMinutes());
 

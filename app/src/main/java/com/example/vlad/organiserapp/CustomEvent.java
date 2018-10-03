@@ -8,15 +8,17 @@ public class CustomEvent {
     private int id;
     private String title;
     private String description;
+    private int isAlarmSet;
     private Date date;
 
     public CustomEvent() {
     }
 
-    public CustomEvent(int id, String title, String description, Date date) {
+    public CustomEvent(int id, String title, String description,int isAlarmSet, Date date) {
         this.id = id;
         this.title = title;
         this.description = description;
+        this.isAlarmSet = isAlarmSet;
         this.date = date;
     }
 
@@ -45,6 +47,14 @@ public class CustomEvent {
         this.description = description;
     }
 
+    public int getIsAlarmSet() {
+        return isAlarmSet;
+    }
+
+    public void setIsAlarmSet(int isAlarmSet) {
+        this.isAlarmSet = isAlarmSet;
+    }
+
     public Date getDate() {
         return date;
     }
@@ -60,6 +70,7 @@ public class CustomEvent {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
+                ", isAlarmSet='" + isAlarmSet + '\'' +
                 ", date=" + date +
                 '}';
     }

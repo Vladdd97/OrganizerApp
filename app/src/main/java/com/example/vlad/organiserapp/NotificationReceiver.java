@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 public class NotificationReceiver extends BroadcastReceiver {
 
@@ -19,11 +20,12 @@ public class NotificationReceiver extends BroadcastReceiver {
 
         // get Id of event which calls this notification
         eventId = intent.getExtras().getInt("eventId");
+        Log.d("NotificationReceiver","eventId : " + eventId);
 
         // create Intent for showEventNotification activity
         Intent showEventNotificationIntent = new Intent(context,ShowEventNotificationActivity.class);
         showEventNotificationIntent.putExtra("eventId",eventId);
-        showEventNotificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        showEventNotificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context,RequestCodes.NOTIFICATION_REQUEST_CODE,showEventNotificationIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);

@@ -55,6 +55,12 @@ public class CustomEventXmlParser {
             description.appendChild(doc.createTextNode(customEvent.getDescription()));
             event.appendChild(description);
 
+            // isAlarmSet element
+            Element isAlarmSet = doc.createElement("isAlarmSet");
+            isAlarmSet.appendChild( doc.createTextNode(Integer.toString(customEvent.getIsAlarmSet())) );
+            event.appendChild(isAlarmSet);
+
+
             // date element , will be stored in a Long format
             Element date = doc.createElement("date");
             date.appendChild(doc.createTextNode(Long.toString(customEvent.getDate().getTime())));
@@ -116,6 +122,9 @@ public class CustomEventXmlParser {
                                 // mod description element
                                 if ("description".equals(eElement.getNodeName()))
                                     eElement.setTextContent(customEvent.getDescription());
+                                // mod isAlarmSet
+                                if("isAlarmSet".equals(eElement.getNodeName()))
+                                    eElement.setTextContent(Integer.toString(customEvent.getIsAlarmSet()));
                                 // mod date element
                                 if ("date".equals(eElement.getNodeName()))
                                     eElement.setTextContent(Long.toString(customEvent.getDate().getTime()));
@@ -177,6 +186,11 @@ public class CustomEventXmlParser {
             Element description = doc.createElement("description");
             description.appendChild(doc.createTextNode(customEvent.getDescription()));
             event.appendChild(description);
+
+            // isAlarmSet element
+            Element isAlarmSet = doc.createElement("isAlarmSet");
+            isAlarmSet.appendChild( doc.createTextNode(Integer.toString(customEvent.getIsAlarmSet())) );
+            event.appendChild(isAlarmSet);
 
             // date element
             Element date = doc.createElement("date");
@@ -283,6 +297,9 @@ public class CustomEventXmlParser {
                                 // set description element
                                 if ("description".equals(eElement.getNodeName()))
                                     customEvent.setDescription(eElement.getTextContent());
+                                // set isAlarmSet element
+                                if ("isAlarmSet".equals(eElement.getNodeName()))
+                                    customEvent.setIsAlarmSet(Integer.parseInt(eElement.getTextContent()));
                                 // set date element
                                 if ("date".equals(eElement.getNodeName()))
                                     customEvent.setDate(new Date( Long.parseLong(eElement.getTextContent()) ));
@@ -338,6 +355,9 @@ public class CustomEventXmlParser {
                             // mod description element
                             if ("description".equals(eElement.getNodeName()))
                                 customEventtt.setDescription(eElement.getTextContent());
+                            // mod isAlarmSet element
+                            if ("isAlarmSet".equals(eElement.getNodeName()))
+                                customEventtt.setIsAlarmSet(Integer.parseInt(eElement.getTextContent()));
                             // mod date element
                             if ("date".equals(eElement.getNodeName()))
                                 customEventtt.setDate(new Date(Long.parseLong(eElement.getTextContent())));

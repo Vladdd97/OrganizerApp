@@ -30,7 +30,7 @@ public class CalendarActivity extends AppCompatActivity {
 
         // set fileName variable of CustomXml class
         // getFileDir() - Returns a File representing an internal directory for your app
-        String path = getFilesDir() + File.separator + "OrganiserAppEvents.xml";
+        String path = getFilesDir() + File.separator + "OrganiserEvents.xml";
         CustomEventXmlParser.fileName  = path;
 
         date = new Date();
@@ -66,6 +66,7 @@ public class CalendarActivity extends AppCompatActivity {
 
         Calendar calendar = Calendar.getInstance();
         Intent setNotificationIntent = new Intent(CalendarActivity.this,NotificationReceiver.class);
+        //setNotificationIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         //need to be modified
         setNotificationIntent.putExtra("eventId",1);
 

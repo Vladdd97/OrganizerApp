@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import java.util.Date;
@@ -18,6 +19,7 @@ public class AddEventActivity extends AppCompatActivity implements TimePickerDia
     private TextView selectedDate;
     private TextView titleOfEvent;
     private TextView timeTextView;
+    private Switch isAlarmSet;
 
 
     private TextView descriptionOfEvent;
@@ -37,6 +39,7 @@ public class AddEventActivity extends AppCompatActivity implements TimePickerDia
         titleOfEvent = findViewById(R.id.titleOfEvent);
         descriptionOfEvent = findViewById(R.id.descriptionOfEvent);
         timeTextView = findViewById(R.id.timeTextView);
+        isAlarmSet = findViewById(R.id.isAlarmSetTextView);
 
         selectedDate.setText(selectedDate.getText() + dateOfEvent.toString());
         dateTimeOfEvent = new Date();
@@ -48,9 +51,12 @@ public class AddEventActivity extends AppCompatActivity implements TimePickerDia
         dateTimeOfEvent.setDate(Integer.parseInt(date[0]));
         dateTimeOfEvent.setMonth(Integer.parseInt(date[1]) - 1);
         dateTimeOfEvent.setYear(Integer.parseInt(date[2]));
+        int setAlarm = 0;
+        if (isAlarmSet.isChecked())
+            setAlarm = 1;
 
         customEvent = new CustomEvent(CustomEventXmlParser.getLastEventId() + 1,titleOfEvent.getText().toString(),
-                descriptionOfEvent.getText().toString(), dateTimeOfEvent);
+                descriptionOfEvent.getText().toString(),setAlarm,dateTimeOfEvent);
 
         if ( CustomEventXmlParser.checkIfExists(CustomEventXmlParser.fileName)){
             CustomEventXmlParser.addEventXml(customEvent);

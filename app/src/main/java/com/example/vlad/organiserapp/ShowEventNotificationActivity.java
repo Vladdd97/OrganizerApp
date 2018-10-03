@@ -3,6 +3,7 @@ package com.example.vlad.organiserapp;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 public class ShowEventNotificationActivity extends AppCompatActivity {
@@ -20,16 +21,18 @@ public class ShowEventNotificationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_eventa_notification);
-
-        fromActivity = getIntent();
-        eventId = fromActivity.getExtras().getInt("eventId");
-        customEvent = CustomEventXmlParser.getEventById(eventId);
-
-        // find all TextInputs
-        descriptionOfEvent = findViewById(R.id.descriptionOfEvent);
-        titleOfEvent = findViewById(R.id.titleOfEvent);
-
-        titleOfEvent.setText(customEvent.getTitle());
-        descriptionOfEvent.setText(customEvent.getDescription());
+//
+//        fromActivity = getIntent();
+//        eventId = fromActivity.getExtras().getInt("eventId");
+//        //customEvent = CustomEventXmlParser.getEventById(eventId);
+//        Log.d("ShowEventNotification","eventId : " + eventId);
+//        //Log.d("ShowEventNotification","customEvent : " + customEvent);
+//
+//        // find all TextInputs
+//        descriptionOfEvent = findViewById(R.id.descriptionOfEvent);
+//        titleOfEvent = findViewById(R.id.titleOfEvent);
+//
+//        titleOfEvent.setText("Bau");
+//        descriptionOfEvent.setText("lalala");
     }
 }
