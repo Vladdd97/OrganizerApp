@@ -66,8 +66,11 @@
         android:layout_marginStart="57dp"
         android:layout_marginLeft="57dp"
         android:layout_marginTop="48dp"
+        android:background="@color/chooseTimeButton"
         android:onClick="onClick_chooseTimeButton"
+        android:padding="5dp"
         android:text="@string/timeButton"
+        android:textColor="@color/buttonTextColor"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/descriptionOfEvent" />
 
