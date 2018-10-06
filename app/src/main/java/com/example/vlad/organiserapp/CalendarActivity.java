@@ -62,25 +62,5 @@ public class CalendarActivity extends AppCompatActivity {
 
     }
 
-    public void onClick_setNotificationButton(View v) {
-
-        Calendar calendar = Calendar.getInstance();
-        Intent setNotificationIntent = new Intent(CalendarActivity.this,NotificationReceiver.class);
-        //setNotificationIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        //need to be modified
-        setNotificationIntent.putExtra("eventId",1);
-
-        PendingIntent pedingIntent = PendingIntent.getBroadcast(getApplicationContext(),RequestCodes.NOTIFICATION_REQUEST_CODE,
-                setNotificationIntent,PendingIntent.FLAG_UPDATE_CURRENT );
-
-        AlarmManager alarManager =  (AlarmManager) getSystemService(ALARM_SERVICE);
-
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT)
-            alarManager.setExact(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis()+10000,pedingIntent);
-        else
-            alarManager.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis()+10000,pedingIntent);
-
-    }
-
 
 }

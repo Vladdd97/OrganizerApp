@@ -14,17 +14,24 @@ import android.util.Log;
 public class NotificationReceiver extends BroadcastReceiver {
 
     int eventId;
+    String title;
+    String description;
     NotificationCompat.Builder mBuilder;
     @Override
     public void onReceive(Context context, Intent intent) {
 
         // get Id of event which calls this notification
         eventId = intent.getExtras().getInt("eventId");
+
+        title = intent.getExtras().getString("title");
+        description = intent.getExtras().getString("description");
         Log.d("NotificationReceiver","eventId : " + eventId);
 
         // create Intent for showEventNotification activity
         Intent showEventNotificationIntent = new Intent(context,ShowEventNotificationActivity.class);
         showEventNotificationIntent.putExtra("eventId",eventId);
+        showEventNotificationIntent.putExtra("title",title);
+        showEventNotificationIntent.putExtra("description",description);
         showEventNotificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context,RequestCodes.NOTIFICATION_REQUEST_CODE,showEventNotificationIntent,
@@ -52,8 +59,8 @@ public class NotificationReceiver extends BroadcastReceiver {
             mBuilder = new NotificationCompat.Builder(context,CHANNEL_ID)
                     .setContentIntent(pendingIntent)
                     .setSmallIcon(R.drawable.ic_launcher_foreground)
-                    .setContentTitle("Simple Notification")
-                    .setContentText("Take a picture and after that press notification button !")
+                    .setContentTitle(title)
+                    .setContentText(description)
                     .setAutoCancel(true);
         }else {
 
@@ -61,8 +68,8 @@ public class NotificationReceiver extends BroadcastReceiver {
             mBuilder = new NotificationCompat.Builder(context)
                     .setContentIntent(pendingIntent)
                     .setSmallIcon(R.drawable.ic_launcher_foreground)
-                    .setContentTitle("Simple Notification")
-                    .setContentText("Take a picture and after that press notification button !")
+                    .setContentTitle(title)
+                    .setContentText(description)
                     .setAutoCancel(true);
         }
 
