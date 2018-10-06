@@ -1,13 +1,26 @@
 package com.example.vlad.organiserapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -21,11 +34,22 @@ public class ShowAllEventsActivity extends AppCompatActivity {
     public View.OnClickListener modifyButtonOnClickListener;
     public View.OnClickListener deleteButtonOnClickListener;
     public LinearLayout parentLinearLayout;
+    public ConstraintLayout showAllEventsConstraintLayout;
+    ArrayAdapter<String> adapter;
+    private ListView eventsList;
+    PopupWindow popupWindow;
+    Button deleteButton;
+    Button modifyButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_all_events);
+
+        //get layout of activity_show_all_events
+        showAllEventsConstraintLayout = (ConstraintLayout) findViewById(R.id.ShowAllEventsConstraintLayout);
+        // get ListView of events
+        eventsList = (ListView) findViewById(R.id.eventsList);
 
         // create OnClickListener for modify button
         modifyButtonOnClickListener = new View.OnClickListener() {
@@ -47,7 +71,7 @@ public class ShowAllEventsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 int id = v.getId() - deleteButtonIncreaseIndex;
                 CustomEventXmlParser.deleteEvent(id);
-                parentLinearLayout.removeAllViews();
+                //parentLinearLayout.removeAllViews();
                 showAllEvents();
                 Log.d("ShowAllEventsLogger", "id :" + id);
             }
@@ -61,75 +85,161 @@ public class ShowAllEventsActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         //super.onActivityResult(requestCode, resultCode, data);
         if ( requestCode == RequestCodes.MODIFY_ACTIVITY_RESULT){
-            parentLinearLayout.removeAllViews();
+            //parentLinearLayout.removeAllViews();
             showAllEvents();
         }
 
     }
 
     public void showAllEvents() {
+        // close pop up window
+        if ( popupWindow != null)
+            popupWindow.dismiss();
+        // get array of objects
+        ArrayList<CustomEvent> customEventsArray = CustomEventXmlParser.getcustomEvents();
+        // get array of titles
+        ArrayList<String> customEventTitles = new ArrayList<>();
 
-        // get parent Layout
-        parentLinearLayout = findViewById(R.id.eventsLinearLayout);
-        ArrayList<CustomEvent> eventList;
-        eventList = CustomEventXmlParser.getcustomEvents();
-        for (int i = 0; i < eventList.size(); i++) {
+        // set titles
+        for(int i = 0 ; i < customEventsArray.size();i++)
+            customEventTitles.add(customEventsArray.get(i).getId()+". "+customEventsArray.get(i).getTitle());
 
-            // create child LinearLayout for TextView
-            LinearLayout childTextViewLinearLayout = new LinearLayout(ShowAllEventsActivity.this);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, customEventTitles);
 
-            // create new TextView
-            TextView newTextView = new TextView(ShowAllEventsActivity.this);
-            newTextView.setId(textViewIncreaseIndex + eventList.get(i).getId());
-            Date eventDate = eventList.get(i).getDate();
-            newTextView.setText("\n" + "" +
-                    "ID : " + eventList.get(i).getId() + "\n" +
-                    "Title : " + eventList.get(i).getTitle() + "\n" +
-                    "Description : " + eventList.get(i).getDescription() + "\n" +
-                    "isAlarmSet : " + eventList.get(i).getIsAlarmSet() + "\n" +
-                    "Date : " + eventDate.getDate() + "/" + eventDate.getMonth() + eventDate.getYear() +"\n" +
-                    "Time: " + eventDate.getHours() + ":" + eventDate.getMinutes());
+        eventsList.setAdapter(adapter);
 
-            // create child LinearLayout for Buttons
-            LinearLayout childButtonswLinearLayout = new LinearLayout(ShowAllEventsActivity.this);
+        // set onClick event for every item of list
+        eventsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                              @Override
+                                              public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-            // create modify button
-            Button modifyButton = new Button(ShowAllEventsActivity.this);
-            modifyButton.setId(modifyButtonIncreaseIndex + eventList.get(i).getId());
-            modifyButton.setText("Modify");
-            // style of button
-            modifyButton.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_light));
-            modifyButton.setTextColor(getResources().getColor(android.R.color.white));
-            // add OnClickListener to modify button
-            modifyButton.setOnClickListener(modifyButtonOnClickListener);
+                                                  //instantiate the popup.xml layout file
+                                                  LayoutInflater layoutInflater = (LayoutInflater) ShowAllEventsActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                                  View customView = layoutInflater.inflate(R.layout.popup, null);
+                                                  // find buttons from pop up window
+                                                  modifyButton = (Button) customView.findViewById(R.id.modifyButton);
+                                                  deleteButton = (Button) customView.findViewById(R.id.deleteButton);
 
-            // create delete button
-            Button deleteButton = new Button(ShowAllEventsActivity.this);
-            deleteButton.setId(deleteButtonIncreaseIndex + eventList.get(i).getId());
-            deleteButton.setText("Delete");
-            // style of button
-            deleteButton.setBackgroundColor(getResources().getColor(android.R.color.holo_red_light));
-            deleteButton.setTextColor(getResources().getColor(android.R.color.white));
-            // add OnClickListener to delete button
-            deleteButton.setOnClickListener(deleteButtonOnClickListener);
+                                                  // get eventId
+                                                  String text = ((TextView)view).getText().toString();
+                                                  String [] eventIdString = text.toString().split("\\.");
+                                                  String number = eventIdString[0];
+                                                  int eventId = Integer.parseInt(number);
+                                                  // set buttons' id ... needs to perform onClickEvents
+                                                  modifyButton.setId(modifyButtonIncreaseIndex + eventId);
+                                                  deleteButton.setId(deleteButtonIncreaseIndex + eventId);
+                                                  // add OnClickListener to modify button
+                                                  modifyButton.setOnClickListener(modifyButtonOnClickListener);
+                                                  // add OnClickListener to delete button
+                                                  deleteButton.setOnClickListener(deleteButtonOnClickListener);
 
-            // add TextView to child LinearLayout for TextView
-            childTextViewLinearLayout.addView(newTextView);
 
-            // add Buttons to child LinearLayout for Buttons
-            childButtonswLinearLayout.addView(modifyButton);
-            childButtonswLinearLayout.addView(deleteButton);
 
-            // add childLinearLayouts to parent LinearLayout
-            parentLinearLayout.addView(childTextViewLinearLayout);
-            parentLinearLayout.addView(childButtonswLinearLayout);
+                                                  //instantiate popup window
+                                                  popupWindow = new PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+                                                  //display the popup window
+                                                  popupWindow.showAtLocation(showAllEventsConstraintLayout, Gravity.CENTER, 0, 0);
+
+                                                  Log.d("fromList", "position : " + position + " | id : " + id +
+                                                          " | eventId : " + eventId);
+                                              }
+                                          } );
+
+/*
+            // get parent Layout
+            parentLinearLayout =
+
+            findViewById(R.id.eventsLinearLayout);
+
+            ArrayList<CustomEvent> eventList;
+            eventList =CustomEventXmlParser.getcustomEvents();
+        for(
+            int i = 0; i<eventList.size();i++)
+
+            {
+
+                // create child LinearLayout for TextView
+                LinearLayout childTextViewLinearLayout = new LinearLayout(ShowAllEventsActivity.this);
+
+                // create new TextView
+                TextView newTextView = new TextView(ShowAllEventsActivity.this);
+                newTextView.setId(textViewIncreaseIndex + eventList.get(i).getId());
+                Date eventDate = eventList.get(i).getDate();
+                newTextView.setText("\n" + "" +
+                        "ID : " + eventList.get(i).getId() + "\n" +
+                        "Title : " + eventList.get(i).getTitle() + "\n" +
+                        "Description : " + eventList.get(i).getDescription() + "\n" +
+                        "isAlarmSet : " + eventList.get(i).getIsAlarmSet() + "\n" +
+                        "Date : " + eventDate.getDate() + "/" + eventDate.getMonth() + eventDate.getYear() + "\n" +
+                        "Time: " + eventDate.getHours() + ":" + eventDate.getMinutes());
+
+                // create child LinearLayout for Buttons
+                LinearLayout childButtonswLinearLayout = new LinearLayout(ShowAllEventsActivity.this);
+
+                // create modify button
+                Button modifyButton = new Button(ShowAllEventsActivity.this);
+                modifyButton.setId(modifyButtonIncreaseIndex + eventList.get(i).getId());
+                modifyButton.setText("Modify");
+                // style of button
+                modifyButton.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_light));
+                modifyButton.setTextColor(getResources().getColor(android.R.color.white));
+                // add OnClickListener to modify button
+                modifyButton.setOnClickListener(modifyButtonOnClickListener);
+
+                // create delete button
+                Button deleteButton = new Button(ShowAllEventsActivity.this);
+                deleteButton.setId(deleteButtonIncreaseIndex + eventList.get(i).getId());
+                deleteButton.setText("Delete");
+                // style of button
+                deleteButton.setBackgroundColor(getResources().getColor(android.R.color.holo_red_light));
+                deleteButton.setTextColor(getResources().getColor(android.R.color.white));
+                // add OnClickListener to delete button
+                deleteButton.setOnClickListener(deleteButtonOnClickListener);
+
+                // add TextView to child LinearLayout for TextView
+                childTextViewLinearLayout.addView(newTextView);
+
+                // add Buttons to child LinearLayout for Buttons
+                childButtonswLinearLayout.addView(modifyButton);
+                childButtonswLinearLayout.addView(deleteButton);
+
+                // add childLinearLayouts to parent LinearLayout
+                parentLinearLayout.addView(childTextViewLinearLayout);
+                parentLinearLayout.addView(childButtonswLinearLayout);
+
+            }
+            */
+
         }
 
+    // search bar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.search_menu,menu);
+        MenuItem item = menu.findItem(R.id.search_event);
+        SearchView searchView = (SearchView) item.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     public void onClick_backButton(View v){
         finish();
     }
 
-
-}
+    }

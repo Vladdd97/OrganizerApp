@@ -58,6 +58,8 @@ public class CalendarActivity extends AppCompatActivity {
 
         Intent getEventIntent = new Intent(CalendarActivity.this,ShowAllEventsActivity.class);
         startActivity(getEventIntent);
+        //Intent getEventIntent = new Intent(CalendarActivity.this,TryListView.class);
+        //(getEventIntent);
 
 
     }

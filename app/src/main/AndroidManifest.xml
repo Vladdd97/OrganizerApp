@@ -23,10 +23,11 @@
         <activity android:name=".AddEventActivity" />
         <activity android:name=".ShowAllEventsActivity" />
         <activity android:name=".ModifyEventActivity" />
-
         <activity android:name=".ShowEventNotificationActivity" />
 
         <receiver android:name=".NotificationReceiver" />
+
+        <activity android:name=".TryListView"></activity>
     </application>
 
 </manifest>
