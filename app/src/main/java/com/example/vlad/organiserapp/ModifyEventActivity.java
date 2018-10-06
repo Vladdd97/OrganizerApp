@@ -1,20 +1,25 @@
 package com.example.vlad.organiserapp;
 
+import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-public class ModifyEventActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
+import java.util.Calendar;
+
+public class ModifyEventActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener , DatePickerDialog.OnDateSetListener {
 
     private TextView descriptionOfEvent;
     private TextView titleOfEvent;
     private TextView timeTextView;
+    private TextView dateTextView;
     private CustomEvent customEvent;
     private Switch isAlarmSet;
 
@@ -29,12 +34,14 @@ public class ModifyEventActivity extends AppCompatActivity implements TimePicker
         descriptionOfEvent = findViewById(R.id.descriptionOfEvent);
         titleOfEvent = findViewById(R.id.titleOfEvent);
         timeTextView = findViewById(R.id.timeTextView);
+        dateTextView = findViewById(R.id.dateTextView);
 
         isAlarmSet = findViewById(R.id.isAlarmSetTextView);
 
         // get eventById
         fromActivity = getIntent();
         eventId = fromActivity.getExtras().getInt("eventId");
+        // find customEvent
         customEvent = CustomEventXmlParser.getEventById(eventId);
         Log.d("Modifyactivity","Passed customEventObject : " + customEvent.toString());
 
@@ -42,6 +49,8 @@ public class ModifyEventActivity extends AppCompatActivity implements TimePicker
         titleOfEvent.setText(customEvent.getTitle());
         descriptionOfEvent.setText(customEvent.getDescription());
         timeTextView.setText(customEvent.getDate().getHours() + ":" + customEvent.getDate().getMinutes());
+        dateTextView.setText(customEvent.getDate().getDate() + "/" + (customEvent.getDate().getMonth()+1) +
+                "/" + customEvent.getDate().getYear());
         isAlarmSet.setChecked(customEvent.getIsAlarmSet() == 1 ? true : false);
 
     }
@@ -62,6 +71,22 @@ public class ModifyEventActivity extends AppCompatActivity implements TimePicker
         timeTextView.setText(hourOfDay+":"+minute);
 
     }
+
+    public void onClick_chooseDateButton(View v){
+        DatePickerDialog dialog = new DatePickerDialog(ModifyEventActivity.this, ModifyEventActivity.this,
+                customEvent.getDate().getYear(),  customEvent.getDate().getMonth(),  customEvent.getDate().getDate());
+        dialog.show();
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+        customEvent.getDate().setDate(dayOfMonth);
+        customEvent.getDate().setMonth(monthOfYear);
+        customEvent.getDate().setYear(year);
+        dateTextView.setText(customEvent.getDate().getDate() + "/" + (customEvent.getDate().getMonth()+1) +
+                "/" + customEvent.getDate().getYear());
+    }
+
 
 
     public void onClick_saveButton(View v){

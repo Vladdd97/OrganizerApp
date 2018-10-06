@@ -15,4 +15,5 @@
     <string name="popUpTextView">Event Info</string>
     <string name="modifyButton">Modify</string>
     <string name="deleteButton">Delete</string>
+    <string name="modifyDateButton">Change Date</string>
 </resources>

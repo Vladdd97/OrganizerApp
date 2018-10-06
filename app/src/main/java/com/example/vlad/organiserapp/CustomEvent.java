@@ -9,6 +9,7 @@ public class CustomEvent {
     private String title;
     private String description;
     private int isAlarmSet;
+    // need to replace Date with Calendar
     private Date date;
 
     public CustomEvent() {
