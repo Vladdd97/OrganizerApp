@@ -33,13 +33,13 @@ public class ShowAllEventsActivity extends AppCompatActivity {
     public int deleteButtonIncreaseIndex = 2000;
     public View.OnClickListener modifyButtonOnClickListener;
     public View.OnClickListener deleteButtonOnClickListener;
-    public LinearLayout parentLinearLayout;
     public ConstraintLayout showAllEventsConstraintLayout;
     ArrayAdapter<String> adapter;
     private ListView eventsList;
     PopupWindow popupWindow;
     Button deleteButton;
     Button modifyButton;
+    TextView popUpTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,9 +122,8 @@ public class ShowAllEventsActivity extends AppCompatActivity {
 
                                                   // get eventId
                                                   String text = ((TextView)view).getText().toString();
-                                                  String [] eventIdString = text.toString().split("\\.");
-                                                  String number = eventIdString[0];
-                                                  int eventId = Integer.parseInt(number);
+                                                  String [] eventInfoString = text.toString().split("\\.");
+                                                  int eventId = Integer.parseInt(eventInfoString[0]);
                                                   // set buttons' id ... needs to perform onClickEvents
                                                   modifyButton.setId(modifyButtonIncreaseIndex + eventId);
                                                   deleteButton.setId(deleteButtonIncreaseIndex + eventId);
@@ -134,6 +133,9 @@ public class ShowAllEventsActivity extends AppCompatActivity {
                                                   deleteButton.setOnClickListener(deleteButtonOnClickListener);
 
 
+                                                  // find TextView from pop up window
+                                                  popUpTextView = (TextView) customView.findViewById(R.id.popUpTextView);
+                                                  popUpTextView.setText(eventInfoString[1]);
 
                                                   //instantiate popup window
                                                   popupWindow = new PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);

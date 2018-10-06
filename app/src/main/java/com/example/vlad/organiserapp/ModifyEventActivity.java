@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -15,6 +16,7 @@ public class ModifyEventActivity extends AppCompatActivity implements TimePicker
     private TextView titleOfEvent;
     private TextView timeTextView;
     private CustomEvent customEvent;
+    private Switch isAlarmSet;
 
     private Intent fromActivity;
     int eventId;
@@ -28,6 +30,7 @@ public class ModifyEventActivity extends AppCompatActivity implements TimePicker
         titleOfEvent = findViewById(R.id.titleOfEvent);
         timeTextView = findViewById(R.id.timeTextView);
 
+        isAlarmSet = findViewById(R.id.isAlarmSetTextView);
 
         // get eventById
         fromActivity = getIntent();
@@ -39,6 +42,7 @@ public class ModifyEventActivity extends AppCompatActivity implements TimePicker
         titleOfEvent.setText(customEvent.getTitle());
         descriptionOfEvent.setText(customEvent.getDescription());
         timeTextView.setText(customEvent.getDate().getHours() + ":" + customEvent.getDate().getMinutes());
+        isAlarmSet.setChecked(customEvent.getIsAlarmSet() == 1 ? true : false);
 
     }
 
@@ -61,6 +65,11 @@ public class ModifyEventActivity extends AppCompatActivity implements TimePicker
 
 
     public void onClick_saveButton(View v){
+
+        if (isAlarmSet.isChecked())
+            customEvent.setIsAlarmSet(1);
+        else
+            customEvent.setIsAlarmSet(0);
 
         customEvent.setTitle(titleOfEvent.getText().toString());
         customEvent.setDescription(descriptionOfEvent.getText().toString());

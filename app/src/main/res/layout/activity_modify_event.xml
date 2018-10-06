@@ -4,42 +4,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ModifyEventActivity">
+    tools:context=".ModifyEventActivity"
+    tools:layout_editor_absoluteY="81dp">
 
     <EditText
         android:id="@+id/titleOfEvent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="140dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginLeft="72dp"
+        android:layout_marginTop="77dp"
         android:ems="10"
         android:hint="@string/titleOfEvent"
         android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="@+id/descriptionOfEvent"
-        app:layout_constraintStart_toStartOf="@+id/descriptionOfEvent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/descriptionOfEvent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="72dp"
-        android:layout_marginStart="72dp"
-        android:layout_marginTop="54dp"
+        android:layout_marginTop="36dp"
         android:ems="10"
         android:hint="@string/descriptionOfEvent"
         android:inputType="textPersonName"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/titleOfEvent"
         app:layout_constraintTop_toBottomOf="@+id/titleOfEvent" />
 
     <Button
         android:id="@+id/saveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="60dp"
         android:layout_marginEnd="50dp"
         android:layout_marginRight="50dp"
+        android:layout_marginBottom="60dp"
+        android:background="@color/saveButtonColor"
         android:onClick="onClick_saveButton"
         android:text="@string/saveButton"
+        android:textColor="@color/buttonTextColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -47,10 +49,12 @@
         android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="37dp"
         android:layout_marginStart="37dp"
+        android:layout_marginLeft="37dp"
+        android:background="@color/deleteButtonColor"
         android:onClick="onClick_backButton"
         android:text="@string/backButton"
+        android:textColor="@color/buttonTextColor"
         app:layout_constraintBottom_toBottomOf="@+id/saveButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/saveButton" />
@@ -59,24 +63,33 @@
         android:id="@+id/chooseTimeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="51dp"
-        android:layout_marginStart="51dp"
+        android:layout_marginStart="57dp"
+        android:layout_marginLeft="57dp"
+        android:layout_marginTop="48dp"
         android:onClick="onClick_chooseTimeButton"
         android:text="@string/timeButton"
-        app:layout_constraintBaseline_toBaselineOf="@+id/timeTextView"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/descriptionOfEvent" />
 
     <TextView
         android:id="@+id/timeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="105dp"
-        android:layout_marginLeft="37dp"
-        android:layout_marginStart="37dp"
-        android:layout_marginTop="104dp"
+        android:layout_marginStart="39dp"
+        android:layout_marginLeft="39dp"
+        android:layout_marginBottom="32dp"
         android:text="@string/timeTextView"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/saveButton"
-        app:layout_constraintStart_toEndOf="@+id/chooseTimeButton"
-        app:layout_constraintTop_toTopOf="@+id/descriptionOfEvent" />
+        app:layout_constraintBottom_toTopOf="@+id/isAlarmSetTextView"
+        app:layout_constraintStart_toEndOf="@+id/chooseTimeButton" />
+
+    <Switch
+        android:id="@+id/isAlarmSetTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/isAlarmSetTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chooseTimeButton" />
 </android.support.constraint.ConstraintLayout>
