@@ -1,8 +1,11 @@
 package com.example.vlad.organiserapp;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -91,16 +94,50 @@ public class ModifyEventActivity extends AppCompatActivity implements TimePicker
 
     public void onClick_saveButton(View v){
 
-        if (isAlarmSet.isChecked())
+        if (isAlarmSet.isChecked()){
             customEvent.setIsAlarmSet(1);
-        else
+            setAlarm();
+        }
+        else {
             customEvent.setIsAlarmSet(0);
+        }
 
         customEvent.setTitle(titleOfEvent.getText().toString());
         customEvent.setDescription(descriptionOfEvent.getText().toString());
         CustomEventXmlParser.modifyXml(customEvent);
 
         finish();
+    }
+
+
+    public void setAlarm() {
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR,customEvent.getDate().getYear());
+        calendar.set(Calendar.MONTH,customEvent.getDate().getMonth());
+        calendar.set(Calendar.DAY_OF_MONTH,customEvent.getDate().getDate());
+        calendar.set(Calendar.HOUR_OF_DAY,customEvent.getDate().getHours());
+        calendar.set(Calendar.MINUTE,customEvent.getDate().getMinutes());
+        calendar.set(Calendar.SECOND,0);
+
+        Intent setNotificationIntent = new Intent(getApplicationContext(),NotificationReceiver.class);
+        //setNotificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        //need to be modified
+        setNotificationIntent.putExtra("eventId",customEvent.getId());
+        setNotificationIntent.putExtra("title",customEvent.getTitle());
+        setNotificationIntent.putExtra("description",customEvent.getDescription());
+
+        PendingIntent pedingIntent = PendingIntent.getBroadcast(getApplicationContext(),
+                ( RequestCodes.NOTIFICATION_REQUEST_CODE + customEvent.getId() ),
+                setNotificationIntent,PendingIntent.FLAG_UPDATE_CURRENT );
+
+        AlarmManager alarManager =  (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT)
+            alarManager.setExact(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),pedingIntent);
+        else
+            alarManager.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),pedingIntent);
+
     }
 
 

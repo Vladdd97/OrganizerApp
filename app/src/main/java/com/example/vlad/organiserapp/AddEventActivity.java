@@ -113,7 +113,7 @@ public class AddEventActivity extends AppCompatActivity implements TimePickerDia
         Intent setNotificationIntent = new Intent(getApplicationContext(),NotificationReceiver.class);
         //setNotificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         //need to be modified
-        setNotificationIntent.putExtra("eventId",1);
+        setNotificationIntent.putExtra("eventId",CustomEventXmlParser.getLastEventId() + 1);
         setNotificationIntent.putExtra("title",titleOfEvent.getText().toString());
         setNotificationIntent.putExtra("description",descriptionOfEvent.getText().toString());
 

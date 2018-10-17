@@ -102,7 +102,9 @@ public class ShowAllEventsActivity extends AppCompatActivity {
 
         // set titles
         for(int i = 0 ; i < customEventsArray.size();i++)
-            customEventTitles.add(customEventsArray.get(i).getId()+". "+customEventsArray.get(i).getTitle());
+            customEventTitles.add(customEventsArray.get(i).getId()+". " + "Title : " + customEventsArray.get(i).getTitle() +
+            "\n        Date : " + customEventsArray.get(i).getDate().getDate() + "/" + customEventsArray.get(i).getDate().getMonth() + "/" + customEventsArray.get(i).getDate().getYear() +
+            "\n        Time : " + customEventsArray.get(i).getDate().getHours() + ":" + customEventsArray.get(i).getDate().getMinutes());
 
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, customEventTitles);
 

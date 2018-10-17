@@ -34,7 +34,7 @@ public class CalendarActivity extends AppCompatActivity {
         CustomEventXmlParser.fileName  = path;
 
         date = new Date();
-        dateOfEvent = date.getDate() + "/" + date.getMonth() + "/" + (1900+date.getYear());
+        dateOfEvent = date.getDate() + "/" + (date.getMonth()+1) + "/" + (1900+date.getYear());
 
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
